@@ -27,6 +27,16 @@
 
       crossPkgs = pkgs.pkgsCross.aarch64-multiplatform;
 
+      criticalConfigTxt = pkgs.writeText "config.txt" ''
+        # Specified by Sel4 documentation, required to boot
+        arm_64bit=1
+        kernel=u-boot.bin
+      '';
+
+      rpiConfigTxt = pkgs.writeText "config.txt" ''
+        # Raspberry Pi configuration
+      '';
+
       # The cross compiler used by U-Boot
       # We change the `aarch64-linux-gnu` from docs to `aarch64-unknown-linux-gnu-` as its what nixpkgs provide
       crossPrefix = "aarch64-unknown-linux-gnu-";
@@ -77,6 +87,10 @@
           cp boot/fixup4.dat $out/fixup4.dat
           cp boot/bcm2712-rpi-5-b.dtb $out/bcm2712-rpi-5-b.dtb
           cp -r boot/overlays $out/overlays/
+
+          cat ${rpiConfigTxt} \
+            ${criticalConfigTxt} \
+            > $out/config.txt
 
           cp ${rpi5-uboot}/u-boot $out/u-boot.bin
         '';
