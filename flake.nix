@@ -9,10 +9,14 @@
     u-boot = {
       url = "github:u-boot/u-boot";
       flake = false;
-      };
     };
+    raspberrypi-firmware = {
+      url = "github:raspberrypi/firmware";
+      flake = false;
+    };
+  };
 
-  outputs = { self, nixpkgs, u-boot }:
+  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware }:
     let
       # Developed on x86
       system = "x86_64-linux";
@@ -61,11 +65,26 @@
         '';
       };
 
+      sdcard-populate = pkgs.stdenv.mkDerivation {
+        pname = "sdcard-filesystem";
+        version = "dev";
+
+        src = raspberrypi-firmware;
+
+        installPhase = ''
+          mkdir -p $out
+          cp boot/start4.elf $out/start4.elf
+          cp boot/fixup4.dat $out/fixup4.dat
+          cp boot/bcm2712-rpi-5-b.dtb $out/bcm2712-rpi-5-b.dtb
+          cp -r boot/overlays $out/overlays/
+
+          cp ${rpi5-uboot}/u-boot $out/u-boot.bin
+        '';
+      };
     in {
       packages.${system} = {
-        inherit rpi5-uboot;
-
-        default = rpi5-uboot;
+        inherit rpi5-uboot sdcard-populate;
+        default = sdcard-populate;
       };
 
       devShells.${system}.default = pkgs.mkShell {

@@ -16,9 +16,26 @@
         "type": "github"
       }
     },
+    "raspberrypi-firmware": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791213694,
+        "narHash": "sha256-VZBz12fmgchTMdVT7t/GOagx+E90qFIhorhGQgd/wJQ=",
+        "owner": "raspberrypi",
+        "repo": "firmware",
+        "rev": "cdb0453d483cc220b53b96e24bc6d361fc511733",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raspberrypi",
+        "repo": "firmware",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "nixpkgs": "nixpkgs",
+        "raspberrypi-firmware": "raspberrypi-firmware",
         "u-boot": "u-boot"
       }
     },
