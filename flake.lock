@@ -1,0 +1,44 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1791048980,
+        "narHash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "u-boot": "u-boot"
+      }
+    },
+    "u-boot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790960419,
+        "narHash": "sha256-GW2MCYSoE6nt3FtXRCHji4E4sU1ofbijaya0MXw5UCo=",
+        "owner": "u-boot",
+        "repo": "u-boot",
+        "rev": "a6ab6a66146ed0bf1420db0ee858b49005783222",
+        "type": "github"
+      },
+      "original": {
+        "owner": "u-boot",
+        "repo": "u-boot",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
