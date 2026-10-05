@@ -72,7 +72,21 @@ let
       cp ${rpi5-uboot}/u-boot $out/u-boot.bin
     '';
   };
+rpi5-uboot-shell = pkgs.mkShell {
+  packages = rpi5-uboot.nativeBuildInputs;
+
+  shellHook = ''
+    export CROSS_COMPILE=${crossPrefix}
+
+    echo "RPI5 U-Boot development shell"
+    echo "CROSS_COMPILE=$CROSS_COMPILE"
+  '';
+};
+
 in
 {
-  inherit rpi5-uboot rpi5-boot-files;
+  inherit
+    rpi5-uboot
+    rpi5-boot-files
+    rpi5-uboot-shell;
 }

@@ -33,5 +33,9 @@
 
         default = rpi5.rpi5-boot-files;
       };
+      devShells.${system} = {
+        rpi5-uboot = rpi5.rpi5-uboot-shell;
+        default = rpi5.rpi5-uboot-shell;
+      };
     };
 }
