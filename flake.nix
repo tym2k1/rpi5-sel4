@@ -1,6 +1,6 @@
 {
   description = ''
-    RPI5 Sel4 firmware build
+    RPI5 seL4 firmware build
     Based on - https://docs.sel4.systems/Hardware/Rpi5.html
     '';
 
