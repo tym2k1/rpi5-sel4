@@ -14,9 +14,14 @@
       url = "github:raspberrypi/firmware";
       flake = false;
     };
+    seL4Test = {
+      url = "path:./nix/seL4Test";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware }:
+  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware, seL4Test, }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -35,6 +40,7 @@
       };
       devShells.${system} = {
         rpi5-uboot = rpi5.rpi5-uboot-shell;
+        seL4Test = seL4Test.devShells.${system}.default;
         default = rpi5.rpi5-uboot-shell;
       };
     };
