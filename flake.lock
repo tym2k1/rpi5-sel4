@@ -178,7 +178,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-ZAfXrzOwSy2csgMO/p/QQfqPMOgGngPgjw62Mr6aOU0=",
+        "narHash": "sha256-ZYbpBVl+W2JF+8CYaMfDdIlOU9UKVLKLrmOcGQNGKNI=",
         "path": "./nix/seL4Test",
         "type": "path"
       },

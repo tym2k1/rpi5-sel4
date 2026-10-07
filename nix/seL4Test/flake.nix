@@ -78,14 +78,38 @@
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
+      crossPkgs = pkgs.pkgsCross.aarch64-multiplatform;
     in {
       devShells.${system}.default = pkgs.mkShell {
-        packages = [
-          pkgs.gnumake
+        packages = with pkgs; [
+          cmake
+          ninja
+          git
+          python3
+          dtc
+
+          (python3.withPackages (ps: [
+            ps.pyyaml
+            ps.pyfdt
+            ps.jinja2
+          ]))
+
+          crossPkgs.stdenv.cc
         ];
 
         shellHook = ''
+          # init-build.sh assumes HOME exists.
+          # To silence it
+          if [ -z "''${HOME:-}" ]; then
+                export HOME="$PWD/.home"
+          fi
+
+          mkdir -p "$HOME"
+
           echo "seL4Test development shell"
+          echo "HOME=$HOME"
+          echo "cmake=$(command -v cmake)"
+          echo "ninja=$(command -v ninja)"
         '';
       };
     };
