@@ -14,14 +14,13 @@
       url = "github:raspberrypi/firmware";
       flake = false;
     };
-    seL4Test = {
-      url = "path:./nix/seL4Test";
-
-      inputs.nixpkgs.follows = "nixpkgs";
+    seL4Test-manifest = {
+      url = "github:seL4/sel4test-manifest";
+      flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware, seL4Test, }:
+  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware, seL4Test-manifest, }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -30,17 +29,23 @@
         inherit pkgs u-boot raspberrypi-firmware;
       };
 
+      seL4Test = import ./nix/seL4Test/seL4Test.nix {
+        inherit pkgs seL4Test-manifest;
+      };
+
     in {
       packages.${system} = {
         inherit (rpi5)
           rpi5-uboot
           rpi5-boot-files;
+        inherit (seL4Test)
+          seL4Test;
 
         default = rpi5.rpi5-boot-files;
       };
       devShells.${system} = {
         rpi5-uboot = rpi5.rpi5-uboot-shell;
-        seL4Test = seL4Test.devShells.${system}.default;
+        seL4Test = seL4Test.seL4Test-shell;
         default = rpi5.rpi5-uboot-shell;
       };
     };
