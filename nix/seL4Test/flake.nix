@@ -85,17 +85,26 @@
           cmake
           ninja
           git
-          python3
           dtc
+          libxml2Python
+          protobuf
 
           (python3.withPackages (ps: [
             ps.pyyaml
             ps.pyfdt
             ps.jinja2
+            ps.ply
+            ps.typing-extensions
+            ps.lxml
+            ps.protobuf
+            ps.libarchive-c
+            ps.pyelftools
           ]))
 
           crossPkgs.stdenv.cc
         ];
+
+        NIX_CFLAGS_COMPILE = "-fno-stack-protector";
 
         shellHook = ''
           # init-build.sh assumes HOME exists.
