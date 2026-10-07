@@ -7,13 +7,16 @@ this is an research on using [seL4](https://sel4.systems/) for achieving separat
 
 ## Build / development
 
-Targets:
-- `rpi5-uboot`
+### Build
 
-Each target supports
 ```sh
 nix build .#<target>
-nix develop .#<target>
 ```
 
-`nix build` builds the target, while `nix develop` provides a development shell with the dependencies required to build it.
+### Development worfklow
+
+```sh
+# Required for lix.
+nix flake update <target>
+nix develop --ignore-environment .#<target>
+```
