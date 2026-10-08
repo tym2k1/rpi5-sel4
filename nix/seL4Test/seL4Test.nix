@@ -82,8 +82,10 @@ let
       cmake
       ninja
       dtc
+      git
       libxml2Python
       protobuf
+      cpio
 
       (python3.withPackages (ps: [
         ps.pyyaml
@@ -95,66 +97,101 @@ let
         ps.protobuf
         ps.libarchive-c
         ps.pyelftools
+        ps.jsonschema
       ]))
 
       crossPkgs.stdenv.cc
     ];
 
-    dontConfigure = true;
+    unpackPhase = ''
+      runHook preUnpack
 
-    unpackPhase = "true";
-
-    buildPhase = ''
-      mkdir -p $out
+      sourceRoot="$PWD/source"
+      mkdir -p "$sourceRoot"
 
       # kernel/
-      cp -a ${seL4} $out/kernel
+      cp -a ${seL4} $sourceRoot/kernel
 
       # projects/
-      mkdir -p $out/projects
+      mkdir -p $sourceRoot/projects
 
       cp -a ${musllibc} \
-        $out/projects/musllibc
+        $sourceRoot/projects/musllibc
+      chmod -R u+w $sourceRoot/projects/musllibc
 
       cp -a ${seL4_libs} \
-        $out/projects/seL4_libs
+        $sourceRoot/projects/seL4_libs
 
       cp -a ${seL4_projects_libs} \
-        $out/projects/seL4_projects_libs
+        $sourceRoot/projects/seL4_projects_libs
 
       cp -a ${sel4runtime} \
-        $out/projects/sel4runtime
+        $sourceRoot/projects/sel4runtime
 
       cp -a ${sel4test} \
-        $out/projects/sel4test
+        $sourceRoot/projects/sel4test
 
       cp -a ${util_libs} \
-        $out/projects/util_libs
+        $sourceRoot/projects/util_libs
 
       # tools/
-      mkdir -p $out/tools
+      mkdir -p $sourceRoot/tools
 
       cp -a ${nanopb} \
-        $out/tools/nanopb
+        $sourceRoot/tools/nanopb
 
       cp -a ${opensbi} \
-        $out/tools/opensbi
+        $sourceRoot/tools/opensbi
 
       cp -a ${seL4_tools} \
-        $out/tools/seL4
+        $sourceRoot/tools/seL4
 
       # repo manifest linkfiles
       ln -s tools/seL4/cmake-tool/init-build.sh \
-        $out/init-build.sh
+        $sourceRoot/init-build.sh
 
       ln -s tools/seL4/cmake-tool/griddle \
-        $out/griddle
+        $sourceRoot/griddle
 
       ln -s projects/sel4test/easy-settings.cmake \
-        $out/easy-settings.cmake
+        $sourceRoot/easy-settings.cmake
+
+      patchShebangs "$sourceRoot"
+      runHook postUnpack
     '';
 
-    installPhase = "true";
+    sourceRoot = "source";
+
+    # We want seL4's init-build.sh/CMake machinery to perform configuration.
+    configurePhase = ''
+      runHook preConfigure
+
+      cd "$sourceRoot"
+      mkdir -p cbuild
+      cd cbuild
+
+      echo $PWD
+
+      ../init-build.sh \
+        -DPLATFORM=bcm2712 \
+        -DAARCH64=1
+      runHook postConfigure
+    '';
+
+    hardeningDisable = [ "stackprotector" ];
+    dontFixup = true;
+    buildPhase = ''
+      cd "$sourceRoot/cbuild"
+      ninja
+    '';
+
+    installPhase = ''
+
+      mkdir -p "$out"
+
+      # Adjust these to the actual artifacts produced by your configuration.
+      cp -a "$sourceRoot/cbuild/." "$out/"
+    '';
   };
 
   seL4Test-shell = pkgs.mkShell {
