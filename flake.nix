@@ -14,13 +14,13 @@
       url = "github:raspberrypi/firmware";
       flake = false;
     };
-    seL4Test-manifest = {
-      url = "github:seL4/sel4test-manifest";
-      flake = false;
-    };
+    # seL4Test-manifest = {
+    #   url = "github:seL4/sel4test-manifest";
+    #   flake = false;
+    # };
   };
 
-  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware, seL4Test-manifest, }:
+  outputs = { self, nixpkgs, u-boot, raspberrypi-firmware, }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -30,7 +30,7 @@
       };
 
       seL4Test = import ./nix/seL4Test/seL4Test.nix {
-        inherit pkgs seL4Test-manifest;
+        inherit pkgs;
       };
 
     in {

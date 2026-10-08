@@ -36,24 +36,7 @@
       "inputs": {
         "nixpkgs": "nixpkgs",
         "raspberrypi-firmware": "raspberrypi-firmware",
-        "seL4Test-manifest": "seL4Test-manifest",
         "u-boot": "u-boot"
-      }
-    },
-    "seL4Test-manifest": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1791133634,
-        "narHash": "sha256-UKwYFja0naikySZhScZG1QgqMbaSj5p2Kn88SOFfosQ=",
-        "owner": "seL4",
-        "repo": "sel4test-manifest",
-        "rev": "822dbeef1a833a64aecef8965e58d4123af6cd71",
-        "type": "github"
-      },
-      "original": {
-        "owner": "seL4",
-        "repo": "sel4test-manifest",
-        "type": "github"
       }
     },
     "u-boot": {
