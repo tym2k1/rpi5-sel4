@@ -13,10 +13,8 @@ this is an research on using [seL4](https://sel4.systems/) for achieving separat
 nix build .#<target>
 ```
 
-### Development worfklow
+### Getting buildInputs for testing
 
 ```sh
-# Required for lix.
-nix flake update <target>
-nix develop --ignore-environment .#<target>
+nix develop .#<target>
 ```
