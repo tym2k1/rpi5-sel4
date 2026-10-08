@@ -14,10 +14,6 @@
       url = "github:raspberrypi/firmware";
       flake = false;
     };
-    # seL4Test-manifest = {
-    #   url = "github:seL4/sel4test-manifest";
-    #   flake = false;
-    # };
   };
 
   outputs = { self, nixpkgs, u-boot, raspberrypi-firmware, }:
