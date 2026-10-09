@@ -190,7 +190,7 @@ let
       mkdir -p "$out"
 
       # Adjust these to the actual artifacts produced by your configuration.
-      cp -a "$sourceRoot/cbuild/." "$out/"
+      cp -a "$sourceRoot/cbuild/images/." "$out/"
     '';
   };
 
