@@ -195,7 +195,9 @@ let
   };
 
   seL4Test-shell = pkgs.mkShell {
-    packages = seL4Test.nativeBuildInputs;
+    packages = seL4Test.nativeBuildInputs ++ [
+      pkgs.git-repo
+    ];
 
     shellHook = ''
       # shellHook specific version of
